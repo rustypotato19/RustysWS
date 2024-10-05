@@ -15,14 +15,14 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                // Install Node.js and NPM dependencies
                 script {
-                    def nodeHome = tool name: 'Node20', type: 'NodeJSInstallation'  // Adjust based on your NodeJS installation
+                    def nodeHome = tool name: 'Node20', type: 'NodeJSInstallation'  // Ensure this matches your NodeJS installation name in Jenkins
                     env.PATH = "${nodeHome}/bin:${env.PATH}"
                 }
                 sh 'npm install'
             }
         }
+
 
         stage('Build React App') {
             steps {
