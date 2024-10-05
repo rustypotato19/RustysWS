@@ -47,12 +47,14 @@ const FormModal = ({ isOpen, onClose }) => {
         await axios.post("https://rustyws.com/api/submit-request", formData);
         setLoading(false); // Stop loading
         setSuccess(true); // Show success message
-
       } catch (error) {
         setLoading(false); // Stop loading
         setError("Error submitting request. Please try again.");
-        console.error(error);
+        
+        // Log the full error object for better debugging:
+        console.error("Submission Error:", error.response || error.message || error);
       }
+      
     }, Math.random() * (6000 - 3000) + 3000); // Random delay between 3-6 seconds
   };
 
