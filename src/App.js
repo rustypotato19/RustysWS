@@ -8,6 +8,8 @@ import Footer from './components/Footer';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import RequestsPage from './components/RequestsPage';
 import HomePage from './HomePage';
+import AdminDashboard from './components/AdminDashboard';
+import AdminLogin from './components/AdminLogin';
 
 
 function App() {
@@ -22,6 +24,8 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/admin-dashboard" element={<AdminDashboard />} />
+          <Route path="/admin-login" element={<AdminLogin />} />
           <Route path="/requests" element={<RequestsPage />} />
         </Routes>
       </Router>

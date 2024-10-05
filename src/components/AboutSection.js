@@ -3,7 +3,7 @@ import React from "react";
 const AboutSection = () => {
   return (
     <section id="about" className="bg-rws-dark-blue text-white py-12 text-center">
-      <div className="container mx-auto">
+      <div className="container mx-auto w-[80%] md:w-full">
         <h2 className="text-3xl font-bold mb-3">About Me</h2>
         <p className="text-lg max-w-2xl mx-auto">
           Briefly, I am looking to provide accessible development to all. I am
