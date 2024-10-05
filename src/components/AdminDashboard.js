@@ -22,7 +22,7 @@ const AdminDashboard = () => {
       })
       .catch((err) => {
         console.error(err);
-        setError("Error fetching requests.");
+        setError("Error fetching requests...");
       });
   }, []);
 
