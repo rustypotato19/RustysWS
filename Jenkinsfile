@@ -30,7 +30,6 @@ pipeline {
         stage('Deploy to Server') {
             steps {
                 sh "sudo -S rsync -av --delete ./build/ ${WEB_DIR}/"
-                sh "123"
             }
         }
     }
