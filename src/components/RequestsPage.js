@@ -7,7 +7,7 @@ const RequestsPage = () => {
   useEffect(() => {
     const fetchRequests = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/get-requests");
+        const response = await axios.get("http://rustyws.com:5000/get-requests");
         setRequests(response.data);
       } catch (error) {
         console.error("Error fetching requests:", error);
