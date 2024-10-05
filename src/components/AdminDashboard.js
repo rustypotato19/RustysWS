@@ -125,10 +125,10 @@ const AdminDashboard = () => {
                   <button
                     className="bg-green-500 text-white px-4 py-2 rounded-lg"
                     onClick={() =>
-                      updateStatus(request.id, "completed")
+                      updateStatus(request.id, "finished")
                     }
                   >
-                    Completed
+                    Finished
                   </button>
                   <button
                     className="bg-red-500 text-white px-4 py-2 rounded-lg"
