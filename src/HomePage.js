@@ -1,9 +1,17 @@
 import React from 'react';
+import Hero from './components/Hero';
+import ServiceList from './components/ServiceList';
+import AboutSection from './components/AboutSection';
+import SkillsSection from './components/SkillsSection';
+
 
 const HomePage = () => {
   return (
-    <div>
-      {/* <h1>Welcome to the Home Page</h1> */}
+    <div className="App">
+      <Hero />
+      <ServiceList />
+      <AboutSection />
+      <SkillsSection />
     </div>
   );
 };

@@ -7,7 +7,7 @@ const AboutSection = () => {
         <h2 className="text-3xl font-bold mb-3">About Me</h2>
         <p className="text-lg max-w-2xl mx-auto">
           Briefly, I am looking to provide accessible development to all. I am
-          passionate about helping both individuals and businesses succeed online. I offer fully
+          passionate about helping both individuals and businesses to succeed online. I offer fully
           customisable solutions to make your idea stand out.
         </p>
         <div className="separator w-2/3 border-2 mx-auto rounded-lg border-rws-light-blue opacity-35 my-4"></div>

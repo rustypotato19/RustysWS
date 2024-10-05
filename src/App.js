@@ -1,35 +1,53 @@
-import React from 'react';
-import Header from './components/Header';
-import Hero from './components/Hero';
-import ServiceList from './components/ServiceList';
-import AboutSection from './components/AboutSection';
-import SkillsSection from './components/SkillsSection';
-import Footer from './components/Footer';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import RequestsPage from './components/RequestsPage';
-import HomePage from './HomePage';
-import AdminDashboard from './components/AdminDashboard';
-import AdminLogin from './components/AdminLogin';
-
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import MainLayout from "./components/MainLayout";
+import AdminLayout from "./components/AdminLayout";
+import HomePage from "./HomePage";
+import AdminLogin from "./components/AdminLogin";
+import AdminDashboard from "./components/AdminDashboard";
+import RequestsPage from "./components/RequestsPage";
 
 function App() {
   return (
-    <div className="App">
-      <Header />
-      <Hero />
-      <ServiceList />
-      <AboutSection />
-      <SkillsSection />
-      <Footer />
-      <Router>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/admin-dashboard" element={<AdminDashboard />} />
-          <Route path="/admin-login" element={<AdminLogin />} />
-          <Route path="/requests" element={<RequestsPage />} />
-        </Routes>
-      </Router>
-    </div>
+    <Router>
+      <Routes>
+        {/* Public Routes */}
+        <Route
+          path="/"
+          element={
+            <MainLayout>
+              <HomePage />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/requests"
+          element={
+            <MainLayout>
+              <RequestsPage />
+            </MainLayout>
+          }
+        />
+
+        {/* Admin Routes */}
+        <Route
+          path="/admin-login"
+          element={
+            <AdminLayout>
+              <AdminLogin />
+            </AdminLayout>
+          }
+        />
+        <Route
+          path="/admin-dashboard"
+          element={
+            <AdminLayout>
+              <AdminDashboard />
+            </AdminLayout>
+          }
+        />
+      </Routes>
+    </Router>
   );
 }
 

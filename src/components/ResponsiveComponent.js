@@ -18,7 +18,7 @@ const ResponsiveComponent = () => {
     <div>
       {isMobile ? (
         <a href="/">
-            <h1 className="text-white text-4xl font-bold flex justify-center items-center">
+            <h1 className="text-white text-4xl font-bold flex justify-center items-center mx-2 sm:mx-0">
             Rusty's Web Services
             </h1>
         </a>

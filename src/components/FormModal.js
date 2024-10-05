@@ -48,9 +48,6 @@ const FormModal = ({ isOpen, onClose }) => {
         setLoading(false); // Stop loading
         setSuccess(true); // Show success message
 
-        setTimeout(() => {
-          onClose(); // Close modal after 4 seconds
-        }, 4000);
       } catch (error) {
         setLoading(false); // Stop loading
         setError("Error submitting request. Please try again.");
@@ -59,12 +56,25 @@ const FormModal = ({ isOpen, onClose }) => {
     }, Math.random() * (6000 - 3000) + 3000); // Random delay between 3-6 seconds
   };
 
+  const handleClose = () => {
+    // Reset the modal state on close
+    setFormData({
+      requestType: "",
+      contactInfo: "",
+      description: ""
+    });
+    setCharCount(500);
+    setSuccess(false);  // Reset the success message
+    setError("");       // Clear any previous errors
+    onClose();          // Trigger parent onClose if any
+  };
+
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
       {/* Background Blur */}
-      <div className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm" onClick={onClose}></div>
+      <div className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm" onClick={handleClose}></div>
 
       {/* Modal with Slide-Up Animation */}
       <div className={`relative bg-white rounded-lg shadow-lg p-8 mx-4 z-10 max-w-md w-2/3 sm:w-full  transform transition-all duration-500 ease-in-out ${animate ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"}`}>
@@ -111,7 +121,7 @@ const FormModal = ({ isOpen, onClose }) => {
                 </div>
 
                 <div className="flex justify-end">
-                  <button type="button" className="bg-gray-400 text-white py-2 px-4 rounded-lg mr-4" onClick={onClose}>Cancel</button>
+                  <button type="button" className="bg-gray-400 text-white py-2 px-4 rounded-lg mr-4" onClick={handleClose}>Cancel</button>
                   <button type="submit" className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-800">Submit</button>
                 </div>
               </form>
@@ -121,7 +131,7 @@ const FormModal = ({ isOpen, onClose }) => {
           <div className="text-center">
             <h2 className="text-2xl font-bold text-green-600 mb-4">Success!</h2>
             <p className="text-green-500">Your request has been submitted successfully.</p>
-            <button onClick={onClose} className="mt-4 bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-800">
+            <button onClick={handleClose} className="mt-4 bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-800">
               Close
             </button>
           </div>
