@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 const AdminDashboard = () => {
-  const [requests, setRequests] = useState([]);
+  const [requests, setRequests] = useState([]); // Ensure requests is initialized as an empty array
   const [filter, setFilter] = useState("");
   const [error, setError] = useState("");
 
@@ -12,8 +12,18 @@ const AdminDashboard = () => {
       .get("https://rustyws.com/admin/requests", {
         headers: { Authorization: "ws0k4n0p8i1s9" },
       })
-      .then((res) => setRequests(res.data))
-      .catch((err) => setError("Error fetching requests."));
+      .then((res) => {
+        // Ensure the response is an array
+        if (Array.isArray(res.data)) {
+          setRequests(res.data);
+        } else {
+          throw new Error("Data is not an array");
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        setError("Error fetching requests.");
+      });
   }, []);
 
   const updateStatus = async (id, newStatus) => {
@@ -54,13 +64,15 @@ const AdminDashboard = () => {
     setFilter(e.target.value);
   };
 
-  // Filtered requests based on the filter criteria
-  const filteredRequests = requests.filter(
-    (request) =>
-      request.contact_info.includes(filter) ||
-      request.status.includes(filter) ||
-      request.request_type.includes(filter)
-  );
+  // Ensure requests is an array before filtering
+  const filteredRequests = Array.isArray(requests)
+    ? requests.filter(
+        (request) =>
+          request.contact_info.includes(filter) ||
+          request.status.includes(filter) ||
+          request.request_type.includes(filter)
+      )
+    : [];
 
   return (
     <div className="container mx-auto p-4">
@@ -140,4 +152,3 @@ const AdminDashboard = () => {
 };
 
 export default AdminDashboard;
-
