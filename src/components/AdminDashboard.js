@@ -9,7 +9,7 @@ const AdminDashboard = () => {
   useEffect(() => {
     // Fetch all requests
     axios
-      .get("https://rustyws.com/requests", {
+      .get("https://rustyws.com/api/admin/requests", {
         headers: { Authorization: "ws0k4n0p8i1s9" },
       })
       .then((res) => {
@@ -20,12 +20,12 @@ const AdminDashboard = () => {
         setError("Error fetching requests.");
         console.error(err); // Log the error
       });
-  }, []);  
+  }, []); 
 
   const updateStatus = async (id, newStatus) => {
     try {
       await axios.put(
-        `https://rustyws.com/admin/requests/${id}/status`,
+        `https://rustyws.com/api/admin/requests/${id}/status`, // Updated URL
         { status: newStatus },
         { headers: { Authorization: "ws0k4n0p8i1s9" } }
       );
@@ -42,7 +42,7 @@ const AdminDashboard = () => {
   const updateContacted = async (id, contactedStatus) => {
     try {
       await axios.put(
-        `https://rustyws.com/admin/requests/${id}/contacted`,
+        `https://rustyws.com/api/admin/requests/${id}/contacted`, // Updated URL
         { contacted: contactedStatus },
         { headers: { Authorization: "ws0k4n0p8i1s9" } }
       );
