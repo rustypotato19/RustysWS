@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        NODE_VERSION = '20.14.0'  // Adjust based on your version
+        NODE_VERSION = 'Node20'  // Ensure this matches your NodeJS installation name in Jenkins
         WEB_DIR = '/var/www/rustyswebservices' // The directory where the build files will go
     }
 
@@ -16,24 +16,21 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 script {
-                    def nodeHome = tool name: '20.14.0', type: 'NodeJSInstallation'  // Ensure this matches your NodeJS installation name in Jenkins
+                    def nodeHome = tool name: 'Node20', type: 'NodeJSInstallation'  // Use the correct NodeJS installation name
                     env.PATH = "${nodeHome}/bin:${env.PATH}"
                 }
                 sh 'npm install'
             }
         }
 
-
         stage('Build React App') {
             steps {
-                // Build the React app
                 sh 'npm run build'
             }
         }
 
         stage('Deploy to Server') {
             steps {
-                // Copy build files to the server web directory
                 sh "rsync -av --delete ./build/ ${WEB_DIR}/"
             }
         }
