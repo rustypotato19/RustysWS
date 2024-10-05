@@ -29,7 +29,7 @@ pipeline {
 
         stage('Deploy to Server') {
             steps {
-                sh "sudo rsync -av --delete ./build/ ${WEB_DIR}/"
+                sh "rsync -av --no-owner --no-group --delete ./build/ ${WEB_DIR}/"
             }
         }
     }
