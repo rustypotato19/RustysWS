@@ -2,24 +2,22 @@ pipeline {
     agent any
 
     environment {
-        NODE_VERSION = 'Node20'  // Ensure this matches your NodeJS installation name in Jenkins
-        WEB_DIR = '/var/www/rustyswebservices' // The directory where the build files will go
+        NODE_VERSION = '20.14.0'
+        WEB_DIR = '/var/www/rustyswebservices'
     }
 
     stages {
         stage('Clone Repository') {
             steps {
-                git branch: 'main', url: 'https://github.com/rustypotato19/RustysWS.git'  // Replace with your actual Git repo URL
+                git branch: 'main', url: 'https://github.com/rustypotato19/RustysWS.git'
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                script {
-                    def nodeHome = tool name: 'Node20', type: 'NodeJSInstallation'  // Use the correct NodeJS installation name
-                    env.PATH = "${nodeHome}/bin:${env.PATH}"
-                }
-                sh 'npm install'
+                // Directly use system's Node.js
+                sh 'node -v' // Check if Node.js is available
+                sh 'npm install' // Install dependencies
             }
         }
 
