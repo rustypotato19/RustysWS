@@ -16,7 +16,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 script {
-                    def nodeHome = tool name: 'Node20', type: 'NodeJSInstallation'  // Ensure this matches your NodeJS installation name in Jenkins
+                    def nodeHome = tool name: '20.14.0', type: 'NodeJSInstallation'  // Ensure this matches your NodeJS installation name in Jenkins
                     env.PATH = "${nodeHome}/bin:${env.PATH}"
                 }
                 sh 'npm install'
