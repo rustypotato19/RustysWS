@@ -9,7 +9,7 @@ const AdminDashboard = () => {
   useEffect(() => {
     // Fetch all requests
     axios
-      .get("https://rustyws.com/admin/requests", {
+      .get("https://rustyws.com/requests", {
         headers: { Authorization: "ws0k4n0p8i1s9" },
       })
       .then((res) => {
