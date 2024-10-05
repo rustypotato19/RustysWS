@@ -10,17 +10,12 @@ const AdminDashboard = () => {
     // Fetch all requests
     axios
       .get("https://rustyws.com/admin/requests", {
-        headers: { Authorization: "ws0k4n0p8i1s9" },
+        headers: { Authorization: "ws0k4n0p8i1s9" }, // Admin Authorization header
       })
-      .then((res) => {
-        console.log('API Response:', res.data); // Log the response
-        setRequests(res.data.requests || []); // Adjust this based on the actual structure
-      })
-      .catch((err) => {
-        console.error('Error fetching requests:', err);
-        setError("Error fetching requests.");
-      });
+      .then((res) => setRequests(res.data))  // Storing fetched requests data in the state
+      .catch((err) => setError("Error fetching requests."));
   }, []);
+  
   
 
   const updateStatus = async (id, newStatus) => {
