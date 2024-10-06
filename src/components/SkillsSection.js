@@ -92,8 +92,19 @@ const skills = [
 const SkillsSection = () => {
   const [focusedSkill, setFocusedSkill] = useState(null); // Track which skill is focused
 
+  // Handler for selecting a skill by index
   const handleSkillClick = (index) => {
     setFocusedSkill(focusedSkill === index ? null : index); // Toggle focus
+  };
+
+  // Handler to go to the previous skill
+  const handlePrevSkill = () => {
+    setFocusedSkill((prev) => (prev === 0 ? skills.length - 1 : prev - 1)); // Loop back to the last skill if on the first
+  };
+
+  // Handler to go to the next skill
+  const handleNextSkill = () => {
+    setFocusedSkill((prev) => (prev === skills.length - 1 ? 0 : prev + 1)); // Loop back to the first skill if on the last
   };
 
   return (
@@ -118,25 +129,38 @@ const SkillsSection = () => {
       {/* Floating modal for the focused skill */}
       {focusedSkill !== null && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg transform transition-transform duration-500 text-center mx-4 min-w-[80%] max-w-[80%] max-h-[80%] overflow-auto">
-            <img src={skills[focusedSkill].imgSrc} alt={skills[focusedSkill].name} className="w-12 mb-4 mx-auto" />
-            <h3 className="text-2xl font-semibold mb-4">{skills[focusedSkill].name}</h3>
-            <p className="text-gray-700">{skills[focusedSkill].description}</p>
+          <div className="bg-white p-6 rounded-lg shadow-lg transform transition-transform duration-500 text-center mx-4 min-w-[80%] max-w-[80%] max-h-[80%] overflow-auto h-1/2">
+            <div className="h-[40%] max-h-[40%]">
+              <img src={skills[focusedSkill].imgSrc} alt={skills[focusedSkill].name} className="w-12 mb-4 mx-auto" />
+              <h3 className="text-2xl font-semibold mb-4">{skills[focusedSkill].name}</h3>
+              <p className="text-gray-700 overflow-y-auto h-[80%]">{skills[focusedSkill].description}</p>
+            </div>
+            <div className="my-auto h-[20%]"></div>
             <div className="flex flex-col items-center justify-center">
               <a
                 href={skills[focusedSkill].infoLink}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
-                >
-                  Learn More from the Source
+              >
+                Learn More from the Source
               </a>
               <button
                 className="mt-4 px-4 py-2 bg-red-500 text-white rounded"
                 onClick={() => setFocusedSkill(null)}
               >
-                Back to All Skills
+                Back
               </button>
+            </div>
+
+            {/* Previous and Next Arrows */}
+            <div className="flex justify-between mt-4">
+            <button onClick={handlePrevSkill} className="px-4 py-2 bg-gray-300 text-black rounded-lg">
+              Previous
+            </button>
+            <button onClick={handleNextSkill} className="px-4 py-2 bg-gray-300 text-black rounded-lg">
+              Next
+            </button>
             </div>
           </div>
         </div>

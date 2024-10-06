@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import LoaderComponent from "./LoadingSpinner";
+
 
 const FormModal = ({ isOpen, onClose }) => {
   const [animate, setAnimate] = useState(false);
@@ -79,7 +81,7 @@ const FormModal = ({ isOpen, onClose }) => {
       <div className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm" onClick={handleClose}></div>
 
       {/* Modal with Slide-Up Animation */}
-      <div className={`relative bg-white rounded-lg shadow-lg p-8 mx-4 z-10 max-w-md w-2/3 sm:w-full  transform transition-all duration-500 ease-in-out ${animate ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"}`}>
+      <div className={`relative bg-white rounded-lg shadow-lg p-8 mx-4 z-10 max-w-md w-full sm:w-full  transform transition-all duration-500 ease-in-out ${animate ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"}`}>
         {!success ? (
           <>
             <h2 className="text-2xl font-bold mb-4">Contact Us</h2>
@@ -89,20 +91,14 @@ const FormModal = ({ isOpen, onClose }) => {
             {loading ? (
               <div className="flex justify-center items-center">
                 {/* Displaying loading GIF */}
-                <iframe
-                  src="\images\gifs\loading.gif"
-                  title="loading"
-                  width="250"
-                  height="250"
-                  className="rounded overflow-auto ml-10"
-                ></iframe>
+                <LoaderComponent />
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                   <label htmlFor="request-type" className="block text-gray-700">Request Type</label>
                   <select id="request-type" name="requestType" value={formData.requestType} onChange={handleInputChange} className="w-full text-black border border-gray-300 rounded-lg p-2 mt-1" required>
-                    <option value="">Choose request type...</option>
+                    <option value="">Request type...</option>
                     <option value="web-development-small">Web Development (Small)</option>
                     <option value="web-development-large">Web Development (Large)</option>
                     <option value="plugin-development">Plugin Development</option>

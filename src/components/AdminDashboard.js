@@ -39,6 +39,18 @@ const AdminDashboard = () => {
     }
   };
 
+  const deleteEntry = async (id) => {
+    try {
+      await axios.delete(
+        `https://rustyws.com/api/admin/requests/${id}`,
+        { headers: { Authorization: "ws0k4n0p8i1s9" } }
+      );
+      setRequests(requests.filter((req) => req.id!== id));
+    } catch (err) {
+      setError("Error deleting entry.");
+    }
+  };
+
   const updateContacted = async (id, contactedStatus) => {
     try {
       await axios.put(
@@ -105,25 +117,25 @@ const AdminDashboard = () => {
             </tr>
           ) : (
             filteredRequests.map((request) => (
-              <tr key={request.id}>
-                <td className="py-2 px-4 border-b">{request.contact_info}</td>
-                <td className="py-2 px-4 border-b">{request.request_type}</td>
-                <td className="py-2 px-4 border-b">{request.description}</td>
-                <td className="py-2 px-4 border-b">{request.status}</td>
-                <td className="py-2 px-4 border-b">
+              <tr key={request.id} className="">
+                <td className="py-2 px-3 border-b">{request.contact_info}</td>
+                <td className="py-2 px-3 border-b">{request.request_type}</td>
+                <td className="py-2 px-3 border-b">{request.description}</td>
+                <td className="py-2 px-3 border-b">{request.status}</td>
+                <td className="py-2 px-3 border-b">
                   {request.contacted ? "Yes" : "No"}
                 </td>
-                <td className="py-2 px-4 border-b flex gap-2">
+                <td className="py-4 px-3 border-b flex gap-2">
                   <button
-                    className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+                    className="bg-blue-800 text-white px-2 py-1 rounded-lg h-full"
                     onClick={() =>
                       updateStatus(request.id, "in_progress")
                     }
                   >
-                    In Progress
+                    Started
                   </button>
                   <button
-                    className="bg-green-500 text-white px-4 py-2 rounded-lg"
+                    className="bg-green-600 text-white px-2 py-1 rounded-lg h-full"
                     onClick={() =>
                       updateStatus(request.id, "finished")
                     }
@@ -131,10 +143,18 @@ const AdminDashboard = () => {
                     Finished
                   </button>
                   <button
-                    className="bg-red-500 text-white px-4 py-2 rounded-lg"
+                    className="bg-green-900 text-white px-2 py-1 rounded-lg h-full"
                     onClick={() => updateContacted(request.id, 1)}
                   >
-                    Mark Contacted
+                    Contacted
+                  </button>
+                  <button
+                    className="bg-red-700 text-white px-2 py-1 rounded-lg h-full"
+                    onClick={() =>
+                      deleteEntry(request.id)
+                    }
+                  >
+                    Delete
                   </button>
                 </td>
               </tr>
