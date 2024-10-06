@@ -1,33 +1,48 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const AdminDashboard = () => {
-  const [requests, setRequests] = useState([]); // Ensure requests is initialized as an empty array
+  const [requests, setRequests] = useState([]);
   const [filter, setFilter] = useState("");
   const [error, setError] = useState("");
+  const [modalRequest, setModalRequest] = useState(null); // For the modal
+  const [sortByDate, setSortByDate] = useState(false); // For sorting by date
+  const [isModalOpen, setIsModalOpen] = useState(false); // Modal visibility
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch all requests
-    axios
-      .get("https://rustyws.com/api/admin/requests", {
-        headers: { Authorization: "ws0k4n0p8i1s9" },
-      })
-      .then((res) => {
-        console.log('API Response:', res.data); // Add this line to debug
-        setRequests(res.data);
-      })
-      .catch((err) => {
-        setError("Error fetching requests.");
-        console.error(err); // Log the error
-      });
-  }, []); 
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      navigate("/admin-login");
+    } else {
+      axios
+        .get("https://rustyws.com/api/admin/requests", {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((res) => {
+          console.log("API Response:", res.data);
+          setRequests(res.data);
+        })
+        .catch((err) => {
+          if (err.response && err.response.status === 401) {
+            navigate("/admin-login");
+          } else {
+            setError("Error fetching requests.");
+            console.error(err);
+          }
+        });
+    }
+  }, [navigate]);
 
   const updateStatus = async (id, newStatus) => {
     try {
+      const token = localStorage.getItem("token");
       await axios.put(
-        `https://rustyws.com/api/admin/requests/${id}/status`, // Updated URL
+        `https://rustyws.com/api/admin/requests/${id}/status`,
         { status: newStatus },
-        { headers: { Authorization: "ws0k4n0p8i1s9" } }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       setRequests((prev) =>
         prev.map((req) =>
@@ -41,11 +56,11 @@ const AdminDashboard = () => {
 
   const deleteEntry = async (id) => {
     try {
-      await axios.delete(
-        `https://rustyws.com/api/admin/requests/${id}`,
-        { headers: { Authorization: "ws0k4n0p8i1s9" } }
-      );
-      setRequests(requests.filter((req) => req.id!== id));
+      const token = localStorage.getItem("token");
+      await axios.delete(`https://rustyws.com/api/admin/requests/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setRequests(requests.filter((req) => req.id !== id));
     } catch (err) {
       setError("Error deleting entry.");
     }
@@ -53,10 +68,11 @@ const AdminDashboard = () => {
 
   const updateContacted = async (id, contactedStatus) => {
     try {
+      const token = localStorage.getItem("token");
       await axios.put(
-        `https://rustyws.com/api/admin/requests/${id}/contacted`, // Updated URL
+        `https://rustyws.com/api/admin/requests/${id}/contacted`,
         { contacted: contactedStatus },
-        { headers: { Authorization: "ws0k4n0p8i1s9" } }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       setRequests((prev) =>
         prev.map((req) =>
@@ -72,29 +88,57 @@ const AdminDashboard = () => {
     setFilter(e.target.value);
   };
 
-  // Ensure requests is an array before filtering
-  const filteredRequests = Array.isArray(requests) ? requests.filter(
-    (request) =>
-      request.contact_info.includes(filter) ||
-      request.status.includes(filter) ||
-      request.request_type.includes(filter)
-  ) : [];
-  
+  const handleSortByDate = () => {
+    const sortedRequests = [...requests].sort((a, b) => {
+      return sortByDate
+        ? new Date(a.request_date) - new Date(b.request_date) // Sort by ascending if sortByDate is true
+        : new Date(b.request_date) - new Date(a.request_date); // Sort by descending if sortByDate is false
+    });
+    setRequests(sortedRequests);
+    setSortByDate(!sortByDate); // Toggle the sort order
+  };
+
+  const openModal = (request) => {
+    setModalRequest(request); // Set the selected request
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setModalRequest(null); // Clear the selected request
+  };
+
+  const filteredRequests = Array.isArray(requests)
+    ? requests.filter(
+        (request) =>
+          request.contact_info.includes(filter) ||
+          request.status.includes(filter) ||
+          request.request_type.includes(filter)
+      )
+    : [];
 
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-4">Admin Dashboard</h1>
-      
+
       {error && <p className="text-red-500">{error}</p>}
 
-      {/* Filter Input */}
-      <input
-        type="text"
-        placeholder="Filter by contact, status, or request type..."
-        value={filter}
-        onChange={handleFilter}
-        className="mb-4 p-2 border border-gray-300 rounded-lg w-full"
-      />
+      <div className="flex justify-between h-16 mb-4">
+        {/* Filter Input */}
+        <input
+          type="text"
+          placeholder="Filter by contact, status, or request type..."
+          value={filter}
+          onChange={handleFilter}
+          className="mb-4 p-2 border border-gray-300 rounded-lg w-full h-full"
+        />
+        <button
+          onClick={handleSortByDate}
+          className="flex items-center justify-center flex-row bg-blue-500 text-white text-sm px-4 py-2 ml-2 rounded-lg" 
+        >
+          Sort: {sortByDate ? "Oldest" : "Newest"}
+        </button>
+      </div>
 
       {/* Requests Table */}
       <table className="min-w-full bg-white">
@@ -102,7 +146,7 @@ const AdminDashboard = () => {
           <tr>
             <th className="py-2 px-4 border-b">Contact Info</th>
             <th className="py-2 px-4 border-b">Request Type</th>
-            <th className="py-2 px-4 border-b">Description</th>
+            <th className="py-2 px-4 border-b">Date</th>
             <th className="py-2 px-4 border-b">Status</th>
             <th className="py-2 px-4 border-b">Contacted</th>
             <th className="py-2 px-4 border-b">Actions</th>
@@ -118,50 +162,70 @@ const AdminDashboard = () => {
           ) : (
             filteredRequests.map((request) => (
               <tr key={request.id} className="">
-                <td className="py-2 px-3 border-b">{request.contact_info}</td>
+                <td
+                  className="py-2 px-3 border-b cursor-pointer"
+                  onClick={() => openModal(request)}
+                >
+                  {request.contact_info}
+                </td>
                 <td className="py-2 px-3 border-b">{request.request_type}</td>
-                <td className="py-2 px-3 border-b">{request.description}</td>
+                <td className="py-2 px-3 border-b">
+                  {new Date(request.request_date).toLocaleDateString()}
+                </td>
                 <td className="py-2 px-3 border-b">{request.status}</td>
                 <td className="py-2 px-3 border-b">
                   {request.contacted ? "Yes" : "No"}
                 </td>
-                <td className="py-4 px-3 border-b flex gap-2">
-                  <button
-                    className="bg-blue-800 text-white px-2 py-1 rounded-lg h-full"
-                    onClick={() =>
-                      updateStatus(request.id, "in_progress")
-                    }
+                <td className="py-4 px-3 border-b">
+                  <select
+                    className="p-2 rounded bg-gray-200"
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (value === "started") updateStatus(request.id, "in_progress");
+                      else if (value === "finished") updateStatus(request.id, "finished");
+                      else if (value === "contacted") updateContacted(request.id, 1);
+                      else if (value === "delete") deleteEntry(request.id);
+                    }}
                   >
-                    Started
-                  </button>
-                  <button
-                    className="bg-green-600 text-white px-2 py-1 rounded-lg h-full"
-                    onClick={() =>
-                      updateStatus(request.id, "finished")
-                    }
-                  >
-                    Finished
-                  </button>
-                  <button
-                    className="bg-green-900 text-white px-2 py-1 rounded-lg h-full"
-                    onClick={() => updateContacted(request.id, 1)}
-                  >
-                    Contacted
-                  </button>
-                  <button
-                    className="bg-red-700 text-white px-2 py-1 rounded-lg h-full"
-                    onClick={() =>
-                      deleteEntry(request.id)
-                    }
-                  >
-                    Delete
-                  </button>
+                    <option value="">Select Action</option>
+                    <option value="started">Started</option>
+                    <option value="finished">Finished</option>
+                    <option value="contacted">Contacted</option>
+                    <option value="delete">Delete</option>
+                  </select>
                 </td>
               </tr>
             ))
           )}
         </tbody>
       </table>
+
+      {/* Modal for Viewing Request Details */}
+      {isModalOpen && modalRequest && (
+        <div className="w-full flex justify-center items-center">
+          <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+            <div className="bg-white p-6 rounded shadow-md max-w-3xl w-full max-h-[80vh] overflow-auto">
+              <h2 className="text-xl font-bold mb-4">Request Details</h2>
+              <p><strong>Contact Info:</strong> {modalRequest.contact_info}</p>
+              <p><strong>Request Type:</strong> {modalRequest.request_type}</p>
+              <p><strong>Description:</strong></p>
+              <div className="bg-gray-100 p-4 rounded-lg mb-4 overflow-auto max-h-[30vh] break-words">
+                {modalRequest.description}
+              </div>
+              <p><strong>Date:</strong> {new Date(modalRequest.request_date).toLocaleDateString()}</p>
+              <p><strong>Status:</strong> {modalRequest.status}</p>
+              <p><strong>Contacted:</strong> {modalRequest.contacted ? "Yes" : "No"}</p>
+              <button
+                className="bg-red-500 text-white px-4 py-2 mt-4 rounded"
+                onClick={closeModal}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };

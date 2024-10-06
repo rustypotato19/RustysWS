@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // To handle redirection
 import ResponsiveComponent from "./ResponsiveComponent";
 
 // Helper function to get the day suffix (st, nd, rd, th)
@@ -28,6 +29,17 @@ const Header = () => {
     return `${dayWithSuffix} ${month}`;
   });
 
+  const [isAdmin, setIsAdmin] = useState(false); // New state to track admin status
+  const navigate = useNavigate(); // To navigate to admin login page
+
+  // Check if the admin is logged in by checking the token in localStorage
+  useEffect(() => {
+    const token = localStorage.getItem("token"); // Assuming you store token under 'token'
+    if (token) {
+      setIsAdmin(true); // If token exists, assume the user is admin
+    }
+  }, []); // Empty dependency array to run this once on mount
+
   useEffect(() => {
     const intervalId = setInterval(() => {
       // Update server (London) time (HH:mm format)
@@ -49,6 +61,11 @@ const Header = () => {
     return () => clearInterval(intervalId); // Clear the interval when the component unmounts
   }, []);
 
+  const handleAdminClick = () => {
+    // Redirect to the admin login page
+    navigate('/admin-dashboard');
+  };
+
   return (
     <header className="bg-rws-dark-blue py-4">
       <div className="container mx-auto flex flex-col justify-center items-center text-center">
@@ -58,6 +75,16 @@ const Header = () => {
         <div className="text-white mt-2 mb-0 relative flex flex-col items-center justify-center top-4">
           <p>Server Date-Time: {serverDate} - {serverTime}</p>
         </div>
+
+        {/* Conditionally render the Admin button if admin is logged in */}
+        {isAdmin && (
+          <button 
+            className="bg-blue-900 text-white px-2 py-1 rounded-lg fixed top-4 right-4" 
+            onClick={handleAdminClick}
+          >
+            Admin
+          </button>
+        )}
       </div>
     </header>
   );

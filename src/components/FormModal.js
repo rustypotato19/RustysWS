@@ -35,9 +35,12 @@ const FormModal = ({ isOpen, onClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!/\S+@\S+\.\S+/.test(formData.contactInfo) && !/^\d+$/.test(formData.contactInfo)) {
-      setError("Please provide a valid email or phone number.");
-      return;
+    // A robust regex for phone number validation (accepts various formats)
+    const phoneRegex = /^\+?(\d{1,3})?[-.\s]?(\(?\d{1,4}\)?)[-.\s]?\d{1,4}[-.\s]?\d{1,9}([-.\s]?\d{1,9})?$/;
+
+    if (!/\S+@\S+\.\S+/.test(formData.contactInfo) && !phoneRegex.test(formData.contactInfo)) {
+        setError("Please provide a valid email or phone number.");
+        return;
     }
 
     setError(""); // Clear any previous error
