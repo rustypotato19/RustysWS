@@ -129,6 +129,7 @@ const FormModal = ({ isOpen, onClose }) => {
           <div className="text-center">
             <h2 className="text-2xl font-bold text-green-600 mb-4">Success!</h2>
             <p className="text-green-500">Your request has been submitted successfully.</p>
+            <p className="text-gray-500 text-xs mt-2">I aim to contact you within 72 hours regarding your request<br /><span className="">(Includes Weekends)</span></p>
             <button onClick={handleClose} className="mt-4 bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-800">
               Close
             </button>

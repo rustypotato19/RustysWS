@@ -152,7 +152,6 @@ const SkillsSection = () => {
                 Back
               </button>
             </div>
-
             {/* Previous and Next Arrows */}
             <div className="flex justify-between mt-4">
             <button onClick={handlePrevSkill} className="px-4 py-2 bg-gray-300 text-black rounded-lg">
