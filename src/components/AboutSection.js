@@ -13,7 +13,9 @@ const AboutSection = () => {
         <div className="separator w-2/3 border-2 mx-auto rounded-lg border-rws-light-blue opacity-35 my-4"></div>
         <h2 className="text-2xl font-bold mb-3">Who am I?</h2>
         <p className="text-lg max-w-2xl mx-auto">
-          I am a university student currently employed as a Field Applications Engineer for ETAS Ltd in York. I have enjoyed web development since I first touched upon it in my a-level classroom. A beautiful balance of hardcore backend development and making things look pretty.
+          I am a university student currently employed as a Field Applications Engineer for <a 
+            href="https://www.etas.com/en/"
+            className="text-blue-300 decoration-none hover:text-blue-200"> ETAS Ltd</a> in York. I have enjoyed web development since I first touched upon it in my a-level classroom. A beautiful balance of hardcore backend development and making things look pretty.
           <br />
           I am always looking for opportunities to learn and grow as a developer, expecially since it's something I greatly enjoy
           <br />

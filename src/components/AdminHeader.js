@@ -4,20 +4,20 @@ import axios from 'axios';
 
 const AdminHeader = () => {
   const navigate = useNavigate();
-  const [notifications, setNotifications] = useState([]);  // Store notifications
-  const [unreadCount, setUnreadCount] = useState(0);  // Count of unread notifications
-  const [showDropdown, setShowDropdown] = useState(false); // Toggle notification dropdown
+  const [notifications, setNotifications] = useState([]);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [showDropdown, setShowDropdown] = useState(false);
 
   useEffect(() => {
     const fetchNotifications = async () => {
       const token = localStorage.getItem('token');
-  
+
       try {
         const response = await axios.get('https://rustyws.com/api/admin/notifications', {
           headers: { Authorization: `Bearer ${token}` },
         });
         setNotifications(response.data);
-        
+
         // Count unread notifications
         const unreadNotifications = response.data.filter(notification => notification.read_status === 0);
         setUnreadCount(unreadNotifications.length);
@@ -25,13 +25,21 @@ const AdminHeader = () => {
         console.error('Error fetching notifications:', error);
       }
     };
-  
+
     fetchNotifications();
-  
-    const interval = setInterval(fetchNotifications, 10000);  // Poll every 10 seconds
-  
-    return () => clearInterval(interval);  // Clean up the interval on component unmount
+    const interval = setInterval(fetchNotifications, 10000);
+
+    return () => clearInterval(interval);
   }, []);
+
+  // Update the document title whenever unreadCount changes
+  useEffect(() => {
+    if (unreadCount > 0) {
+      document.title = `(${unreadCount}) Admin Dashboard`;
+    } else {
+      document.title = 'Admin Dashboard';
+    }
+  }, [unreadCount]);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -40,13 +48,12 @@ const AdminHeader = () => {
 
   const markNotificationsAsRead = async () => {
     try {
-      const token = localStorage.getItem('token');  // Get token
+      const token = localStorage.getItem('token');
 
       await axios.put('https://rustyws.com/api/admin/notifications/mark-read', {}, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      // Reset unread count and mark notifications as read
       setUnreadCount(0);
       const updatedNotifications = notifications.map((notification) => ({
         ...notification,

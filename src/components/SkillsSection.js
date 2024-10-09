@@ -129,38 +129,35 @@ const SkillsSection = () => {
       {/* Floating modal for the focused skill */}
       {focusedSkill !== null && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg transform transition-transform duration-500 text-center mx-4 min-w-[80%] max-w-[80%] max-h-[80%] overflow-auto h-1/2">
-            <div className="h-[40%] max-h-[40%]">
-              <img src={skills[focusedSkill].imgSrc} alt={skills[focusedSkill].name} className="w-12 mb-4 mx-auto" />
+          <div className="h-1/2 sm:h-[45%] bg-white p-6 rounded-lg shadow-lg transform transition-transform duration-500 text-center mx-4 min-w-[80%] max-w-[80%] max-h-[80%] overflow-auto">
+            <div className="h-[65%] max-h-[65%]">
+              <img src={skills[focusedSkill].imgSrc} alt={skills[focusedSkill].name} className="w-12 mx-auto" />
               <h3 className="text-2xl font-semibold mb-4">{skills[focusedSkill].name}</h3>
-              <p className="text-gray-700 overflow-y-auto h-[80%]">{skills[focusedSkill].description}</p>
+              <p className="text-gray-700 overflow-y-auto h-[80%] border border-gray-400 p-2 rounded-lg">{skills[focusedSkill].description}</p>
             </div>
-            <div className="my-auto h-[20%]"></div>
-            <div className="flex flex-col items-center justify-center">
-              <a
-                href={skills[focusedSkill].infoLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
-              >
-                Learn More from the Source
-              </a>
+            <div>
               <button
-                className="mt-4 px-4 py-2 bg-red-500 text-white rounded"
+                className="mt-4 px-4 py-2 bg-red-500 text-white rounded absolute bottom-6 left-6"
                 onClick={() => setFocusedSkill(null)}
               >
                 Back
               </button>
+              <a
+                href={skills[focusedSkill].infoLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 px-4 py-2 bg-blue-500 text-white rounded  absolute bottom-6 right-6"
+              >
+                Learn More
+              </a>
             </div>
             {/* Previous and Next Arrows */}
-            <div className="flex justify-between mt-4">
-            <button onClick={handlePrevSkill} className="px-4 py-2 bg-gray-300 text-black rounded-lg">
-              Previous
+            <button onClick={handlePrevSkill} className="text-gray-500 absolute top-4 left-6 text-2xl">
+              &lt;
             </button>
-            <button onClick={handleNextSkill} className="px-4 py-2 bg-gray-300 text-black rounded-lg">
-              Next
+            <button onClick={handleNextSkill} className="text-gray-500 absolute top-4 right-6 text-2xl">
+              &gt;
             </button>
-            </div>
           </div>
         </div>
       )}

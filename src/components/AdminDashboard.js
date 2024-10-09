@@ -28,7 +28,11 @@ const AdminDashboard = () => {
         .catch((err) => {
           if (err.response && err.response.status === 401) {
             navigate("/admin-login");
-          } else {
+          }
+          else if (err.response && err.response.status === 403){
+            navigate("/admin-login");
+          } 
+          else {
             setError("Error fetching requests.");
             console.error(err);
           }
@@ -141,9 +145,9 @@ const AdminDashboard = () => {
       </div>
 
       {/* Requests Table */}
-      <table className="min-w-full bg-white">
+      <table className="w-full bg-white ">
         <thead>
-          <tr>
+          <tr className="w-full">
             <th className="py-2 px-4 border-b">Contact Info</th>
             <th className="py-2 px-4 border-b">Request Type</th>
             <th className="py-2 px-4 border-b">Date</th>
@@ -161,7 +165,7 @@ const AdminDashboard = () => {
             </tr>
           ) : (
             filteredRequests.map((request) => (
-              <tr key={request.id} className="">
+              <tr key={request.id} className="text-center">
                 <td
                   className="py-2 px-3 border-b cursor-pointer"
                   onClick={() => openModal(request)}

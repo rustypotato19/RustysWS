@@ -13,7 +13,7 @@ const Hero = () => {
   };
 
   return (
-    <section className="bg-rws-light-blue text-white text-center py-20">
+    <section className="bg-rws-light-blue text-white text-center pt-20">
       <div className="container mx-auto">
         <h2 className="text-3xl font-bold mb-6">Your Partner in All Developments</h2>
         <p className="text-lg mx-auto mb-6 w-[80%] md:w-full">
@@ -28,6 +28,30 @@ const Hero = () => {
       </div>
       {/* Render the modal and pass the open/close state */}
       <FormModal isOpen={isModalOpen} onClose={closeModal} />
+      <div className="flex justify-center items-center mt-4">
+        <div className="flex justify-center items-center w-fit text-sm">
+          <div className="p-4 rounded-lg text-center">
+            <h3 className="text-base font-bold">Need more information?</h3>
+            <p>Contact me for information, or just more directly by emailing:</p>
+            <div className="flex flex-col sm:flex-row gap-2 items-center justify-between mt-2">
+              <a
+                href="mailto:
+                info@rustyws.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-rws-dark-blue mx-2 transition-all duration-500 hover:scale-105 hover:text-blue-600 bg-slate-100 py-1 px-2 rounded-lg hover:bg-blue-100"
+              >info@rustyws.com</a>
+              <a
+                href="mailto:
+                contact@rustyws.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-rws-dark-blue mx-2 transition-all duration-500 hover:scale-105 hover:text-blue-600 bg-slate-100 py-1 px-2 rounded-lg hover:bg-blue-100"
+              >contact@rustyws.com</a>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
   );
 };
