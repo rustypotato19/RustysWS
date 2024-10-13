@@ -46,10 +46,8 @@ const FormModal = ({ isOpen, onClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
   
-    // Validate contact info
-    const phoneRegex = /^\+?(\d{1,3})?[-.\s]?(\(?\d{1,4}\)?)[-.\s]?\d{1,4}[-.\s]?\d{1,9}([-.\s]?\d{1,9})?$/;
-    if (!/\S+@\S+\.\S+/.test(formData.contactInfo) && !phoneRegex.test(formData.contactInfo)) {
-      setError("Please provide a valid email or phone number.");
+    if (!/\S+@\S+\.\S+/.test(formData.contactInfo)) {
+      setError("Please provide a valid email.");
       return;
     }
   
@@ -61,6 +59,10 @@ const FormModal = ({ isOpen, onClose }) => {
     const generatedTicketId = generateTicketId();
     setTicketId(generatedTicketId);
   
+    if (formData.description === "") {
+      formData.description = "No description provided";
+    }
+
     // Prepare submission data
     const submissionData = {
       ticketId: generatedTicketId, // Include ticketId in the request data
@@ -117,7 +119,9 @@ const FormModal = ({ isOpen, onClose }) => {
             </h2>  
             {error && <p className="text-red-500">{error}</p>}
             {loading ? (
-              <LoaderComponent />
+              <div className="w-full h-full flex justify-center items-center mb-4">
+                <LoaderComponent />
+              </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
@@ -142,7 +146,7 @@ const FormModal = ({ isOpen, onClose }) => {
                 </div>
 
                 <div>
-                  <label htmlFor="contact-info" className="block text-gray-700">Contact Email/Number</label>
+                  <label htmlFor="contact-info" className="block text-gray-700">Contact Email Address</label>
                   <input type="text" id="contact-info" name="contactInfo" value={formData.contactInfo} onChange={handleInputChange} className="w-full border border-gray-300 rounded-lg p-2 mt-1" placeholder="example@email.com" required />
                 </div>
 
@@ -163,8 +167,8 @@ const FormModal = ({ isOpen, onClose }) => {
           <div className="text-center">
             <h2 className="text-2xl font-bold text-green-700 mb-4">Success!</h2>
             <p className="text-green-700 text-opacity-60 mb-2" >Your request has been submitted successfully.</p>
-            <p className="text-black text-sm">Your ticket ID is [{ticketId}].<br/>You will recieve an email shortly confirming your request details.</p>
-            <p className="text-gray-500 text-xs mt-2">I aim to contact you within 72 hours regarding your request<br /><span>(Includes Weekends)</span></p>
+            <p className="text-black text-sm">Your ticket ID is [{ticketId}].<br/>If your details were correct you will recieve an email within 24 hours confirming your request details.</p>
+            {/* <p className="text-gray-500 text-xs mt-2">I aim to contact you within 72 hours regarding your request<br /><span>(Includes Weekends)</span></p> */}
             <button onClick={handleClose} className="mt-4 bg-green-600 text-rws-gray py-2 px-4 rounded-lg hover:bg-green-800">
               Close
             </button>

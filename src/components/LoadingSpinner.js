@@ -3,7 +3,7 @@ import { Ring } from '@uiball/loaders';
 
 const LoaderComponent = () => {
   return (
-    <div className="flex justify-center items-center h-full relative bottom-7">
+    <div className="flex justify-center items-center h-full">
       <Ring
         size={58}            // Size of the ring
         speed={2}            // Speed of the animation
