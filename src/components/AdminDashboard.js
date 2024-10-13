@@ -40,17 +40,17 @@ const AdminDashboard = () => {
     }
   }, [navigate]);
 
-  const updateStatus = async (id, newStatus) => {
+  const updateStatus = async (ticketId, newStatus) => {
     try {
       const token = localStorage.getItem("token");
       await axios.put(
-        `https://rustyws.com/api/admin/requests/${id}/status`,
+        `https://rustyws.com/api/admin/requests/${ticketId}/status`,
         { status: newStatus },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setRequests((prev) =>
         prev.map((req) =>
-          req.id === id ? { ...req, status: newStatus } : req
+          req.ticket_id === ticketId ? { ...req, status: newStatus } : req
         )
       );
     } catch (err) {
@@ -58,29 +58,29 @@ const AdminDashboard = () => {
     }
   };
 
-  const deleteEntry = async (id) => {
+  const deleteEntry = async (ticketId) => {
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`https://rustyws.com/api/admin/requests/${id}`, {
+      await axios.delete(`https://rustyws.com/api/admin/requests/${ticketId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      setRequests(requests.filter((req) => req.id !== id));
+      setRequests(requests.filter((req) => req.ticket_id !== ticketId));
     } catch (err) {
       setError("Error deleting entry.");
     }
   };
 
-  const updateContacted = async (id, contactedStatus) => {
+  const updateContacted = async (ticketId, contactedStatus) => {
     try {
       const token = localStorage.getItem("token");
       await axios.put(
-        `https://rustyws.com/api/admin/requests/${id}/contacted`,
+        `https://rustyws.com/api/admin/requests/${ticketId}/contacted`,
         { contacted: contactedStatus },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setRequests((prev) =>
         prev.map((req) =>
-          req.id === id ? { ...req, contacted: contactedStatus } : req
+          req.ticket_id === ticketId ? { ...req, contacted: contactedStatus } : req
         )
       );
     } catch (err) {
@@ -117,7 +117,8 @@ const AdminDashboard = () => {
         (request) =>
           request.contact_info.includes(filter) ||
           request.status.includes(filter) ||
-          request.request_type.includes(filter)
+          request.request_type.includes(filter) ||
+          request.ticket_id.includes(filter)
       )
     : [];
 
@@ -128,10 +129,9 @@ const AdminDashboard = () => {
       {error && <p className="text-red-500">{error}</p>}
 
       <div className="flex justify-between h-16 mb-4">
-        {/* Filter Input */}
         <input
           type="text"
-          placeholder="Filter by contact, status, or request type..."
+          placeholder="Filter by contact, status, request type, or ticket ID..."
           value={filter}
           onChange={handleFilter}
           className="mb-4 p-2 border border-gray-300 rounded-lg w-full h-full"
@@ -144,12 +144,13 @@ const AdminDashboard = () => {
         </button>
       </div>
 
-      {/* Requests Table */}
-      <table className="w-full bg-white ">
+      <table className="w-full bg-white">
         <thead>
-          <tr className="w-full">
+          <tr>
+            <th className="py-2 px-4 border-b">Ticket ID</th>
             <th className="py-2 px-4 border-b">Contact Info</th>
             <th className="py-2 px-4 border-b">Request Type</th>
+            <th className="py-2 px-4 border-b">Priority</th>
             <th className="py-2 px-4 border-b">Date</th>
             <th className="py-2 px-4 border-b">Status</th>
             <th className="py-2 px-4 border-b">Contacted</th>
@@ -159,36 +160,31 @@ const AdminDashboard = () => {
         <tbody>
           {filteredRequests.length === 0 ? (
             <tr>
-              <td colSpan="6" className="text-center py-4">
-                No requests found
-              </td>
+              <td colSpan="8" className="text-center py-4">No requests found</td>
             </tr>
           ) : (
             filteredRequests.map((request) => (
-              <tr key={request.id} className="text-center">
-                <td
-                  className="py-2 px-3 border-b cursor-pointer"
-                  onClick={() => openModal(request)}
-                >
-                  {request.contact_info}
+              <tr key={request.ticket_id} className="text-center">
+                <td className="py-2 px-3 border-b cursor-pointer" onClick={() => openModal(request)}>
+                  {request.ticket_id}
                 </td>
+                <td className="py-2 px-3 border-b">{request.contact_info}</td>
                 <td className="py-2 px-3 border-b">{request.request_type}</td>
+                <td className="py-2 px-3 border-b">{request.priority}</td>
                 <td className="py-2 px-3 border-b">
                   {new Date(request.request_date).toLocaleDateString()}
                 </td>
                 <td className="py-2 px-3 border-b">{request.status}</td>
-                <td className="py-2 px-3 border-b">
-                  {request.contacted ? "Yes" : "No"}
-                </td>
+                <td className="py-2 px-3 border-b">{request.contacted ? "Yes" : "No"}</td>
                 <td className="py-4 px-3 border-b">
                   <select
                     className="p-2 rounded bg-gray-200"
                     onChange={(e) => {
                       const value = e.target.value;
-                      if (value === "started") updateStatus(request.id, "in_progress");
-                      else if (value === "finished") updateStatus(request.id, "finished");
-                      else if (value === "contacted") updateContacted(request.id, 1);
-                      else if (value === "delete") deleteEntry(request.id);
+                      if (value === "started") updateStatus(request.ticket_id, "in_progress");
+                      else if (value === "finished") updateStatus(request.ticket_id, "finished");
+                      else if (value === "contacted") updateContacted(request.ticket_id, 1);
+                      else if (value === "delete") deleteEntry(request.ticket_id);
                     }}
                   >
                     <option value="">Select Action</option>
@@ -204,14 +200,15 @@ const AdminDashboard = () => {
         </tbody>
       </table>
 
-      {/* Modal for Viewing Request Details */}
       {isModalOpen && modalRequest && (
         <div className="w-full flex justify-center items-center">
           <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
             <div className="bg-white p-6 rounded shadow-md max-w-3xl w-full max-h-[80vh] overflow-auto">
               <h2 className="text-xl font-bold mb-4">Request Details</h2>
+              <p><strong>Ticket ID:</strong> {modalRequest.ticket_id}</p>
               <p><strong>Contact Info:</strong> {modalRequest.contact_info}</p>
               <p><strong>Request Type:</strong> {modalRequest.request_type}</p>
+              <p><strong>Priority:</strong> {modalRequest.priority}</p>
               <p><strong>Description:</strong></p>
               <div className="bg-gray-100 p-4 rounded-lg mb-4 overflow-auto max-h-[30vh] break-words">
                 {modalRequest.description}
@@ -219,17 +216,13 @@ const AdminDashboard = () => {
               <p><strong>Date:</strong> {new Date(modalRequest.request_date).toLocaleDateString()}</p>
               <p><strong>Status:</strong> {modalRequest.status}</p>
               <p><strong>Contacted:</strong> {modalRequest.contacted ? "Yes" : "No"}</p>
-              <button
-                className="bg-red-500 text-white px-4 py-2 mt-4 rounded"
-                onClick={closeModal}
-              >
+              <button className="bg-red-500 text-white px-4 py-2 mt-4 rounded" onClick={closeModal}>
                 Close
               </button>
             </div>
           </div>
         </div>
       )}
-
     </div>
   );
 };

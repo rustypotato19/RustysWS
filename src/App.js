@@ -6,6 +6,7 @@ import HomePage from "./HomePage";
 import AdminLogin from "./components/AdminLogin";
 import AdminDashboard from "./components/AdminDashboard";
 import RequestsPage from "./components/RequestsPage";
+import ViewTicketPage from "./components/ViewTicketPage";
 
 function App() {
   return (
@@ -29,6 +30,15 @@ function App() {
           }
         />
 
+        <Route 
+          path="/view-ticket" 
+          element={
+            <MainLayout>
+              <ViewTicketPage />
+            </MainLayout>
+          } 
+        />
+
         {/* Admin Routes */}
         <Route
           path="/admin-login"
@@ -46,6 +56,8 @@ function App() {
             </AdminLayout>
           }
         />
+
+        
       </Routes>
     </Router>
   );

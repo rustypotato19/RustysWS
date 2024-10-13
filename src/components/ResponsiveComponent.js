@@ -24,14 +24,14 @@ const ResponsiveComponent = () => {
         </a>
       ) : (
         <h1 className="text-white text-4xl font-bold flex justify-center items-center">
-        <a href="/">
+        <a href="/" className='flex flex-row items-center justify-center'>
         <img
             src="/images/logos/home.svg"
             alt="Home"
             className="w-10 h-auto mr-3"
         />
+        <p>Rusty's Web Services</p>
         </a>
-        Rusty's Web Services
     </h1>
       )}
     </div>

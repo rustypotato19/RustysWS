@@ -29,7 +29,7 @@ const AboutSection = () => {
           <div className="socials grid grid-cols-2 md:grid-cols-4 gap-x-10 justify-items-center justify-center items-center">
             <a href="https://github.com/rustypotato19?tab=repositories" className="tag" target="_blank" rel="noreferrer" >
               <img 
-              className="w-24 hover:scale-110 transition-shadow duration-700 hover:shadow-[0_0_20px_10px_rgba(255,255,255,1)] rounded-full"
+              className="w-24 hover:scale-125 transition-all duration-700 mx-2"
               src="/images/logos/git.svg" 
               alt="GitHub icon" 
               target="_blank"
@@ -37,7 +37,7 @@ const AboutSection = () => {
             </a>
             <a href="https://www.youtube.com/@TheRustyPotato" className="tag" target="_blank" rel="noreferrer" >
               <img 
-              className="w-24 hover:scale-110 transition-shadow duration-700 hover:shadow-[0_0_20px_10px_rgba(255,255,255,1)] rounded-full px-2"
+              className="w-24 hover:scale-125 transition-all duration-700 mx-2"
               src="/images/logos/youtube.svg" 
               alt="youtube icon" 
               target="_blank"
@@ -45,7 +45,7 @@ const AboutSection = () => {
             </a>
             <a href="https://linkedin.com/company/rustys-web-services" className="tag" target="_blank" rel="noreferrer" >
               <img 
-              className="w-24 hover:scale-110 transition-shadow duration-700 hover:shadow-[0_0_20px_10px_rgba(255,255,255,0.7)] rounded-xl"
+              className="w-24 hover:scale-125 transition-all duration-700 mx-2"
               src="/images/logos/linkedin.svg" 
               alt="linkedin icon" 
               target="_blank"
@@ -53,7 +53,7 @@ const AboutSection = () => {
             </a>
             <a href="https://discord.gg/ytYWRTaW3e" className="tag" target="_blank" rel="noreferrer" >
               <img 
-              className="w-24 hover:scale-110 transition-shadow duration-700 hover:shadow-[0_0_20px_10px_rgba(255,255,255,1)] rounded-full px-2" 
+              className="w-24 hover:scale-125 transition-all duration-700 mx-2" 
               src="/images/logos/discord.svg" 
               alt="discord icon" 
               />

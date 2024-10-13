@@ -13,8 +13,8 @@ const Hero = () => {
   };
 
   return (
-    <section className="bg-rws-light-blue text-white text-center pt-20">
-      <div className="container mx-auto">
+    <section className="bg-rws-light-blue text-white text-center pt-10">
+      <div className="container mx-auto pb-4">
         <h2 className="text-3xl font-bold mb-6">Your Partner in All Developments</h2>
         <p className="text-lg mx-auto mb-6 w-[80%] md:w-full">
           I specialise in building modern, responsive, and high-performance websites. Whether you're looking for a simple landing page or a complex web application, I can help   bring your ideas to life through hard work and dedication
@@ -28,8 +28,8 @@ const Hero = () => {
       </div>
       {/* Render the modal and pass the open/close state */}
       <FormModal isOpen={isModalOpen} onClose={closeModal} />
-      <div className="flex justify-center items-center mt-4">
-        <div className="flex justify-center items-center w-fit text-sm">
+      <div className="flex justify-center items-center mt-4 bg-rws-dark-blue">
+        <div className="flex flex-row justify-between items-center text-sm w-full mx-20 xl:w-1/2">
           <div className="p-4 rounded-lg text-center">
             <h3 className="text-base font-bold">Need more information?</h3>
             <p>Contact me for information, or just more directly by emailing:</p>
@@ -48,6 +48,17 @@ const Hero = () => {
                 rel="noopener noreferrer"
                 className="text-rws-dark-blue mx-2 transition-all duration-500 hover:scale-105 hover:text-blue-600 bg-slate-100 py-1 px-2 rounded-lg hover:bg-blue-100"
               >contact@rustyws.com</a>
+            </div>
+          </div>
+          <div className="p-4 rounded-lg text-center">
+            <h3 className="text-base font-bold">Already Made a Request?</h3>
+            <p>View your request and it's status here:</p>
+            <div className="flex flex-col sm:flex-row gap-2 items-center justify-center mt-2">
+              <a
+                  href="/view-ticket"
+                  rel="noopener noreferrer"
+                  className="text-rws-dark-blue mx-2 transition-all duration-500 hover:scale-105 hover:text-blue-600 bg-slate-100 py-1 px-2 rounded-lg hover:bg-blue-100"
+                >View Tickets</a>
             </div>
           </div>
         </div>

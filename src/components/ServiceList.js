@@ -23,7 +23,7 @@ const ServiceList = () => {
           {/* Plugin Development */}
           <div className="bg-white p-6 rounded-lg shadow-md transform transition-transition-shadow duration-500 hover:scale-105 hover:shadow-xl hover:shadow-rws-dark-blue">
             <h3 className="text-2xl text-blue-700 font-semibold mb-4">Plugin Development</h3>
-            <p className="text-gray-700">Developing plugins for platforms like Discord or Minecraft.</p>
+            <p className="text-gray-700">Developing plugins for platforms such as Discord or Minecraft.</p>
           </div>
           
           {/* Responsive Design */}
